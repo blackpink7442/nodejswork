@@ -28,22 +28,11 @@ app.get('/',(req, res) => {
 app.post('/temp/data/save',(req, res)=>{
   const postdata = req.body;
 
-  if(data[0] != 0){
-    //data.shift();
-    data.push(postdata);
-  }else{
-    data.push(postdata);
-  }  
-
-  if(data.length != 0){
-    res.status(401).send('No Data')
-  }else {
-    res.status(200).send('Ok Data')
-  }
 
   const dataname = data["name"];
-
-  console.log(typeof(dataname))
+  console.log(typeof(data))
+  console.log((postdata['name']))
+  res.status(200).send(postdata)
 });
 
 app.get('/temp/data/save',(req,res)=>{
