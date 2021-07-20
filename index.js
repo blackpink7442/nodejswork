@@ -5,12 +5,13 @@ const validator = require('validator')
 app.use(express.json());
 app.use(express.urlencoded({ extended: false}));
 
-const data = 
-    {
-      "a" : "apple",
-      "b" : "banana",
-      "c" : "c"
-    }
+const data =[
+
+];
+
+
+  
+
 
 
 app.use(function (req, res, next) {
@@ -25,21 +26,34 @@ app.get('/',(req, res) => {
   });
 });
 
-app.post('/temp/data/save',(req, res)=>{
+app.post('/temp/data/save',(req, res ,)=>{
   const postdata = req.body;
-
-
-  const dataname = data["name"];
-  console.log(typeof(data))
-  console.log((postdata['name']))
-  res.status(200).send(postdata)
+  data.push(postdata)
+  console.log(typeof(postdata));
+  res.status(200).send(postdata);
 });
 
 app.get('/temp/data/save',(req,res)=>{
-  res.status(200).send(data);
+
+  key = data.pop();
+  console.log(key['name']);
+  //console.log(datakey1);
+  res.status(200).send(Object.keys(key));
+
 })
 
+app.post('/temp/data/load',(req,res)=>{
+  const keydata = data.pop();
+  const keykeys = Object.keys(keydata);
+  const testdata = req.body;
+
+
+  res.status(200).send(data);
+});
+
 app.get('/temp/data/load',(req,res)=>{
+  const laodData = req.body;
+
   res.status(200).send(data);
 });
 
