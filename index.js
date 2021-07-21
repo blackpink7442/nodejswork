@@ -1,19 +1,10 @@
 const express = require('express');
 const app = express();
-const validator = require('validator')
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false}));
 
-const data =[
-
-];
-
-
-  
-
-
-
+var data = {};
 app.use(function (req, res, next) {
   req.headers['content-type'] = 'application/json';
   next();
@@ -28,33 +19,51 @@ app.get('/',(req, res) => {
 
 app.post('/temp/data/save',(req, res ,)=>{
   const postdata = req.body;
-  data.push(postdata)
-  console.log(typeof(postdata));
+  data = postdata;
   res.status(200).send(postdata);
 });
 
 app.get('/temp/data/save',(req,res)=>{
-
   key = data.pop();
-  console.log(key['name']);
-  //console.log(datakey1);
-  res.status(200).send(Object.keys(key));
+  res.status(200).send(Object.keys(data)); //test get data key
 
 })
 
 app.post('/temp/data/load',(req,res)=>{
-  const keydata = data.pop();
+  keydata = data;
   const keykeys = Object.keys(keydata);
-  const testdata = req.body;
+  const loadData = req.body;
+  const loadkey = loadData['load'];
 
+  var ansdata ="{"; 
+  var BreakException = {}; 
 
-  res.status(200).send(data);
-});
+  loadkey.forEach(function(item , i){
 
-app.get('/temp/data/load',(req,res)=>{
-  const laodData = req.body;
+      try{
+      keykeys.forEach(function(item2 , j){
 
-  res.status(200).send(data);
+        if(item === item2 ){
+          let loopkey = item2;          
+          let ans = "\""+item+"\":\""+keydata[item2]+"\",";
+          ansdata = ansdata + ans; 
+          throw BreakException;
+
+        }else if(j >= keykeys.length-1){
+          let notFound = "\"Not Found\",";
+          ansdata = ansdata + notFound;
+          throw BreakException;
+        }
+
+      });
+    }catch(e){
+      if (e!== BreakException) throw e;
+    }
+  });
+  let finishans= "}";
+  ansdata = ansdata + finishans;
+
+  res.status(200).send(ansdata);
 });
 
   // 5.首頁
