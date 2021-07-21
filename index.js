@@ -11,7 +11,7 @@ app.use(function (req, res, next) {
 });
 
 app.get('/hello',(req, res) => {
-  res.send('world');
+  res.send('Hello');
 });
 
 app.post('/temp/data/save',(req, res ,)=>{
@@ -30,7 +30,7 @@ app.post('/temp/data/load',(req,res)=>{
   keydata = data;
   const keykeys = Object.keys(keydata);
   const loadData = req.body;
-  const loadkey = loadData['load'];
+  const loadkey = loadData['loads'];
 
   var ansdata ="{"; 
   var BreakException = {}; 
@@ -41,14 +41,23 @@ app.post('/temp/data/load',(req,res)=>{
       keykeys.forEach(function(item2 , j){
 
         if(item === item2 ){
-          let loopkey = item2;          
-          let ans = "\""+item+"\":\""+keydata[item2]+"\",";
-          ansdata = ansdata + ans; 
+          if(i === loadkey.length-1){
+            let ans = "\""+item+"\":"+"\""+keydata[item2]+"\"";
+            ansdata = ansdata + ans;
+          }else{
+            let ans = "\""+item+"\":"+"\""+keydata[item2]+"\",";
+            ansdata = ansdata + ans;
+          } 
           throw BreakException;
 
         }else if(j >= keykeys.length-1){
-          let notFound = "\"Not Found\",";
-          ansdata = ansdata + notFound;
+          if(i === loadkey.length-1){
+            let notFound = "\""+item+"\":"+"\"Not Found\"";
+            ansdata = ansdata + notFound;
+          }else{
+            let notFound = "\""+item+"\":"+"\"Not Found\",";
+            ansdata = ansdata + notFound;
+          }
           throw BreakException;
         }
 
@@ -59,8 +68,7 @@ app.post('/temp/data/load',(req,res)=>{
   });
   let finishans= "}";
   ansdata = ansdata + finishans;
-
-  res.status(200).send(ansdata);
+  res.status(200).send(JSON.parse(ansdata));
 });
 
   // 5.首頁
