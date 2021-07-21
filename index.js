@@ -11,7 +11,7 @@ app.use(function (req, res, next) {
 });
 
 app.get('/hello',(req, res) => {
-  res.send('Hello');
+  res.send('world');
 });
 
 app.post('/temp/data/save',(req, res ,)=>{
