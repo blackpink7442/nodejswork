@@ -10,11 +10,8 @@ app.use(function (req, res, next) {
   next();
 });
 
-app.get('/',(req, res) => {
-  res.send({
-    mes:' Hello!',
-    user:{}
-  });
+app.get('/hello',(req, res) => {
+  res.send('world');
 });
 
 app.post('/temp/data/save',(req, res ,)=>{
